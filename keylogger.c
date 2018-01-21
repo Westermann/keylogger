@@ -40,9 +40,9 @@ int main(int argc, const char *argv[]) {
         exit(1);
     }
 
-    // Output to logfile.
-    fprintf(logfile, "key,time");
-    fflush(logfile);
+    // Output header to logfile.
+    /* fprintf(logfile, "key,time"); */
+    /* fflush(logfile); */
 
     // Display the location of the logfile and start the loop.
     printf("Logging to: %s\n", logfileLocation);
