@@ -23,7 +23,7 @@ int main(int argc, const char *argv[]) {
     // Clear the logfile if clear argument used or log to specific file if given.
     if(argc == 2) {
         if(strcmp(argv[1], "clear") == 0) {
-            fopen(logfileLocation, "w");
+            fopen(logfileLocation, "wt");
             printf("%s cleared.\n", logfileLocation);
             fflush(stdout);
             exit(1);
@@ -63,9 +63,9 @@ CGEventRef CGEventCallback(CGEventTapProxy proxy, CGEventType type, CGEventRef e
     time_t t = time(NULL);
     struct tm tm = *localtime(&t);
     struct timespec spec;
-    char date[10];
-    char time[9];
-    char tz[6];
+    char date[12];
+    char time[12];
+    char tz[12];
     long ms;
     char *keyAction;
     if (type == kCGEventKeyDown) { keyAction = "down"; };
@@ -77,7 +77,7 @@ CGEventRef CGEventCallback(CGEventTapProxy proxy, CGEventType type, CGEventRef e
     // Key, KeyAction, Time, Date, TimeZone, Milliseconds
     clock_gettime(CLOCK_REALTIME, &spec);
     ms = round(spec.tv_nsec / 1.e6);
-    fprintf(logfile, "\n%s,%s,%10s,%8s,%3s,%ld",
+    fprintf(logfile, "\n%s,%s,%s,%s,%s,%ld",
         convertKeyCode(keyCode),
         keyAction,
         date,
