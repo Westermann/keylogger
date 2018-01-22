@@ -67,14 +67,19 @@ CGEventRef CGEventCallback(CGEventTapProxy proxy, CGEventType type, CGEventRef e
     char time[9];
     char tz[6];
     long ms;
+    char *keyAction;
+    if (type == kCGEventKeyDown) { keyAction = "down"; };
+    if (type == kCGEventFlagsChanged) { keyAction = "modify"; };
+    if (type == kCGEventKeyUp) { keyAction = "up"; };
     strftime(date, 10, "%Y-%m-%d", &tm);
     strftime(time, 9, "%H:%M:%S", &tm);
     strftime(tz, 3, "%z", &tm);
-    // Key, Time, Date, TimeZone, Milliseconds
+    // Key, KeyAction, Time, Date, TimeZone, Milliseconds
     clock_gettime(CLOCK_REALTIME, &spec);
     ms = round(spec.tv_nsec / 1.e6);
-    fprintf(logfile, "\n%s,%10s,%8s,%3s,%ld",
+    fprintf(logfile, "\n%s,%s,%10s,%8s,%3s,%ld",
         convertKeyCode(keyCode),
+        keyAction,
         date,
         time,
         tz,
